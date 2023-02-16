@@ -223,8 +223,8 @@ DEPENDENCIES
   haml
   jquery-rails
   launchy
-  omniauth
-  omniauth-facebook
+  omniauth (~> 1.1.1)
+  omniauth-facebook (~> 1.4.1)
   omniauth-oauth2
   pg
   protected_attributes

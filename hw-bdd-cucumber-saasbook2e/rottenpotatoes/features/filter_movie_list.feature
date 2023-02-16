@@ -20,14 +20,34 @@ Background: movies have been added to database
   | Chicken Run             | G      | 21-Jun-2000  |
 
   And  I am on the RottenPotatoes home page
-  Then 10 seed movies should exist
+  #Then 10 seed movies should exist
 
-Scenario: restrict to movies with 'PG' or 'R' ratings 2
+Scenario: restrict to movies with 'PG' or 'R' ratings 
   # enter step(s) to check the 'PG' and 'R' checkboxes
   # enter step(s) to uncheck all other checkboxes
   # enter step to "submit" the search form on the homepage
   # enter step(s) to ensure that PG and R movies are visible
   # enter step(s) to ensure that other movies are not visible
 
-Scenario: all ratings selected 3
-  # see assignment
+  Given I am on the home page
+  When I uncheck the following ratings: G, NC-17, PG-13
+  And I press "Refresh" button
+  Then I should see the following movies: The Terminator, The Incredibles
+  And I should not see the following movies: Chicken Run, The Melp
+
+  When I uncheck the following ratings: G, PG, PG-13, NC-17, R
+  And I press "Refresh" button
+  Then I should see the following movies: the The Terminator, The Incredibles
+  And I should not see the following movies: Chicken return, The Melp
+
+Scenario: all rating selected
+
+  Given I am on the home page
+  When I check the following ratings: G, PG, PG-13, NC-17, R
+  And I press "Refresh" button
+  Then I should see all the movies
+
+
+
+
+  

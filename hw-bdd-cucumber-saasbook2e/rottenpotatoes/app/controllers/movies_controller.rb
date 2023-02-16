@@ -16,11 +16,25 @@ class MoviesController < ApplicationController
     end
     @all_ratings = Movie.all_ratings
     @selected_ratings = params[:ratings] || session[:ratings] || {}
+  
+    # add new search
+    if params[:search].present?
+      @movies = Movie.where('title LIKE ?', "%#{params[:search]}%")
+      if @movies.empty?
+        redirect_to notfound_movies_path and return
+      elsif @movies.count == 1
+        redirect_to edit_movie_path(@movies.first) and return
+      end
+    end
+    
 
+    
     if @selected_ratings == {}
       @selected_ratings = Hash[@all_ratings.map {|rating| [rating, rating]}]
     end
 
+    
+  
     if params[:sort] != session[:sort] or params[:ratings] != session[:ratings]
       session[:sort] = sort
       session[:ratings] = @selected_ratings
@@ -28,6 +42,7 @@ class MoviesController < ApplicationController
     end
     @movies = Movie.where(rating: @selected_ratings.keys).order(ordering)
   end
+  
 
   def new
     # default: render 'new' template
@@ -60,6 +75,18 @@ class MoviesController < ApplicationController
     flash[:notice] = "Movie '#{@movie.title}' deleted."
     redirect_to movies_path
   end
+
+  #add new
+
+  def search
+    query = params[:q]
+    if query.present?
+      @movies = search_movie(Movie.all.pluck(:title), query)
+    else
+      @movies = []
+    end
+  end
+
 
   private
 

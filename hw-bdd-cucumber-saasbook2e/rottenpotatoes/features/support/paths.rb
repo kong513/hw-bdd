@@ -17,6 +17,8 @@ module NavigationHelpers
     when /^the movies page$/ then '/movies'
     when /^the Create New Movie page$/ then '/movies/new'
     when /^the Movie title page$/ then '/movies'
+    
+    
   
     
       
